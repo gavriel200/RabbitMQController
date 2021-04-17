@@ -390,6 +390,7 @@ class Rabbit:
             context manager using the 'with' keyword.
 
         Returns:
+        --------
             Rabbit object: Returns a Rabbit object for later use.
         """
 
