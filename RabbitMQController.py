@@ -38,6 +38,10 @@ class Rabbit:
             Creates a rpc client that with a queue bound to a fanout exchange.
         def rpc_fanout_server(self, server_queue: str, func: callable):
             Creates a rpc server that consumes from rpc client and returns to the callback exchange.
+        def __enter__(self):
+            This method is called when using the 'with' keyword implementing the context manager.
+        def __exit__(self, exc_type, exc_value, exc_traceback):
+            This method is executed at the end of the context manager.
     """
 
     def __init__(self, host="localhost", port=5672, username="guest", password="guest"):
@@ -379,3 +383,22 @@ class Rabbit:
         print("start consuming")
 
         self.channel.start_consuming()
+
+    def __enter__(self):
+        """
+            This method is implemented when using the Rabbit class as a
+            context manager using the 'with' keyword.
+
+        Returns:
+            Rabbit object: Returns a Rabbit object for later use.
+        """
+
+        return self
+      
+    def __exit__(self, exc_type, exc_value, exc_traceback):
+        """
+            This method is executed at the end of the context manager.
+            It closes the connection to the RabbitMQ server.
+        """
+
+        self.close_connection()
